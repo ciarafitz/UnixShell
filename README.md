@@ -1,0 +1,38 @@
+# Welcome to my Unix Shell Project!
+ ## LSH
+* LSH stands for limited shell in C.
+* It does the following:  read, parse, fork, exec, and wait
+    * All commands must be on a *single* line.
+    * Arguments separated by *whitespace*.
+    * No redirection or piping.
+
+* Only built-ins: **cd**, **help**, **exit**.
+
+Link to shell commands:
+https://docs.cs.cf.ac.uk/notes/linux-shell-commands/
+
+## How to Compile:
+
+* The **main.c** file is the source code where code is written into.
+* **lsh** is the binary file containing machine code (0's and 1's).
+
+To compile run this command in the projects directory:
+
+     gcc -o lsh main.c 
+
+ **Note:** When you change the source file **main.c** you need to *re-compile* the *lsh* using the same command above.
+
+
+## How to Run: 
+
+ Run the following command:
+
+    ./lsh
+
+##  Bugs:
+
+* Currently none (2/3/22)
+
+## Additions for the Future:
+
+* Add more built-ins.
