@@ -13,8 +13,13 @@ https://docs.cs.cf.ac.uk/notes/linux-shell-commands/
 
 ## How to Compile:
 
-* The **main.c** file is the source code where code is written into.
+* **main.c** file is the source code where code is written into.
 * **lsh** is the binary file containing machine code (0's and 1's).
+    * This file should **not** be committed to GitHub
+        * 1) Binary files are too big & bloat repository.
+        * 2) Compiled binary file on my machine won't be the same work on others' machines when they pull the project files.
+        * 3) Good to build binaries yourself when cloning a project so all dependies and correct configuration are set up.
+
 
 To compile run this command in the projects directory:
 
