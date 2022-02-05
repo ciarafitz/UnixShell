@@ -104,27 +104,27 @@ int lsh_exit(char **args)
 
 int lsh_launch(char **args)
 {
-	pid_t pid;	//PID = Process ID of the parent
-	int status;
+	pid_t pid;	//PID = Process ID (this variable will be used to hold different process ID's)
+	int status; //variable that holds status of process
 
-	pid = fork();
-	if (pid == 0) {
-		//Child process
-		if (execvp(args[0],args) == -1){
+	pid = fork(); //the fork creates the PID(Child Process)
+	if (pid == 0) { // 1 process holds the PPID(Parent Process) and the other holds a 0(because it has it's own memory space and that variable was not set)
+		//Child process if 0 
+		if (execvp(args[0],args) == -1){ //Running a program then exits when finished. If returns -1 execvp failed
 			perror("lsh");
 		}
 		exit(EXIT_FAILURE);
-	} else if (pid < 0) {
+	} else if (pid < 0) { //PID will be neg if fork failed
 		//Error forking
 		perror("lsh");
 	} else{
-		// Parent proces
-		do {
-			waitpid(pid, &status, WUNTRACED);
-		}	while (!WIFEXITED(status) && !WIFSIGNALED(status));
+		// Parent process if PID is a positive number
+		// do {
+			waitpid(pid, &status, WUNTRACED); //Parent(shell) waits until child(program) to finish
+		}	while (!WIFEXITED(status) && !WIFSIGNALED(status)); 
 	}
 
-	return 1;
+	return 1; //Once child process is done it goes back into the main loop (lsh_loop)
 }
 
 /**
@@ -141,13 +141,13 @@ int lsh_execute(char **args)
 		// If any empty command is inputted
 		return 1;
 	}
-	for ( i = 0; i < lsh_num_builtins(); i++){
-		if(strcmp(args[0], builtin_str[i]) == 0){
-			return (*builtin_func[i])(args);
+	for ( i = 0; i < lsh_num_builtins(); i++){ 
+		if(strcmp(args[0], builtin_str[i]) == 0){  //reads the first element of the array, compares to see if it's a built in
+			return (*builtin_func[i])(args);  //if command is built in then run built in command (cd, exit,help)
 	    }
 	}
 	
-	return lsh_launch(args);
+	return lsh_launch(args); //if command is not a built-in then call lsh_launch
 
 }
 
@@ -262,9 +262,10 @@ void lsh_loop(void)
 
 	do{
 		printf("> ");
-		line = lsh_read_line();
-		args = lsh_split_line(line);
-		status = lsh_execute(args);
+		line = lsh_read_line(); //reads line
+		args = lsh_split_line(line); //splits command string by the whitespace into an array of strings
+		status = lsh_execute(args); //executes the command using arrary of words
+									 
 
 
 		free(line);
